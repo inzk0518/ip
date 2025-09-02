@@ -1,11 +1,13 @@
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Faith {
     public static void main(String[] args) {
-        System.out.println("    ____________________________________________________________\n" + "     Hello! I'm Faith\n" + "     What can I do for you?\n" + "    ____________________________________________________________");
+        System.out.println("    ____________________________________________________________\n" +
+                "     Hello! I'm Faith\n" + "     What can I do for you?\n" +
+                "    ____________________________________________________________");
         Scanner scanner = new Scanner(System.in);
-        Task[] taskList = new Task[100];
-        int taskCount = 0;
+        ArrayList<Task> taskList = new ArrayList<>();
 
         while (true) {
             String line = scanner.nextLine().trim();
@@ -14,11 +16,9 @@ public class Faith {
                 break;
             }
             if (line.equals("list")) {
-                if (taskCount != 0) {
-                    System.out.println("     Here are the tasks in your list:");
-                }
-                for (int i = 0; i < taskCount; i++) {
-                    System.out.println("     " + (i + 1) + "." + taskList[i]);
+                System.out.println("     Here are the tasks in your list:");
+                for (int i = 0; i < taskList.size(); i++) {
+                    System.out.println("     " + (i + 1) + "." + taskList.get(i));
                 }
                 System.out.println("    ____________________________________________________________");
             } else {
@@ -30,11 +30,11 @@ public class Faith {
                             throw new IllegalArgumentException("     OOPS!!! The description of a todo cannot be empty.");
                         }
                         Task task = new Todo(parts[1]);
-                        taskList[taskCount++] = task;
+                        taskList.add(task);
                         System.out.println("     Got it. I've added this task:");
                         System.out.print("       ");
                         System.out.println(task.toString());
-                        System.out.println("     Now you have " + taskCount + " tasks in the list.");
+                        System.out.println("     Now you have " + taskList.size() + " tasks in the list.");
                     } else if (parts[0].equals("deadline")) {
                         //Deadline
                         if (parts.length < 2) {
@@ -47,11 +47,11 @@ public class Faith {
                                     "Please do it like this : deadline <description> /by <date>");
                         }
                         Task task = new Deadline(deadlineParts[0].trim(), deadlineParts[1].trim());
-                        taskList[taskCount++] = task;
+                        taskList.add(task);
                         System.out.println("     Got it. I've added this task:");
                         System.out.print("       ");
                         System.out.println(task.toString());
-                        System.out.println("     Now you have " + taskCount + " tasks in the list.");
+                        System.out.println("     Now you have " + taskList.size() + " tasks in the list.");
                     } else if (parts[0].equals("event")) {
                         //Event
                         if (parts.length < 2) {
@@ -68,18 +68,34 @@ public class Faith {
                                     "Please do it like this : event <description> /from <time> to: <time>");
                         }
                         Task task = new Event(eventParts[0].trim(), timeParts[0].trim(), timeParts[1].trim());
-                        taskList[taskCount++] = task;
+                        taskList.add(task);
                         System.out.println("     Got it. I've added this task:");
                         System.out.print("       ");
                         System.out.println(task.toString());
-                        System.out.println("     Now you have " + taskCount + " tasks in the list.");
+                        System.out.println("     Now you have " + taskList.size() + " tasks in the list.");
+                    } else if (parts[0].equals("delete")) {
+                        if (parts.length < 2) {
+                            throw new IllegalArgumentException("     OOPS!!! Please specify the task number to delete.");
+                        }
+                        int deleteIndex;
+                        try {
+                            deleteIndex = Integer.parseInt(parts[1]) - 1;
+                        } catch (NumberFormatException e) {
+                            throw new IllegalArgumentException("     OOPS!!! Task number must be a valid integer.");
+                        }
+                        if  (deleteIndex < 0 || deleteIndex >= taskList.size()) {
+                            throw new IllegalArgumentException("     OOPS!!! Invalid task number.");
+                        }
+                        System.out.println("     Noted. I've removed this task:");
+                        System.out.println("       " + taskList.remove(deleteIndex).toString());
+                        System.out.println("     Now you have " + taskList.size() + " tasks in the list.");
                     } else if (parts[0].equals("mark")) {
-                        Task targetTask = taskList[Integer.parseInt(parts[1]) - 1];
+                        Task targetTask = taskList.get(Integer.parseInt(parts[1]) - 1);
                         targetTask.markDone();
                         System.out.println("     Nice! I've marked this task as done:");
                         System.out.println("       " + targetTask);
                     } else if (parts[0].equals("unmark")) {
-                        Task targetTask = taskList[Integer.parseInt(parts[1]) - 1];
+                        Task targetTask = taskList.get(Integer.parseInt(parts[1]) - 1);
                         targetTask.unmarkDone();
                         System.out.println("     OK, I've marked this task as not done yet:");
                         System.out.println("       " + targetTask);
