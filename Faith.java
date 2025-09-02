@@ -3,8 +3,8 @@ import java.util.Scanner;
 public class Faith {
     public static void main(String[] args) {
         System.out.println("    ____________________________________________________________\n" +
-                "    Hello! I'm Faith\n" +
-                "    What can I do for you?\n" +
+                "     Hello! I'm Faith\n" +
+                "     What can I do for you?\n" +
                 "    ____________________________________________________________");
         Scanner scanner = new Scanner(System.in);
         Task[] taskList = new Task[100];
@@ -18,7 +18,7 @@ public class Faith {
             }
             if (line.equals("list")) {
                 if (taskCount != 0) {
-                    System.out.println("     Here are the tasks in your list: ");
+                    System.out.println("     Here are the tasks in your list:");
                 }
                 for (int i = 0; i < taskCount; i++) {
                     System.out.println("     " + (i + 1) + "." + taskList[i]);
@@ -30,7 +30,7 @@ public class Faith {
                     //Todo
                     Task task = new Todo(parts[1]);
                     taskList[taskCount++] = task;
-                    System.out.println("     Got it. I've added this task: ");
+                    System.out.println("     Got it. I've added this task:");
                     System.out.print("       ");
                     System.out.println(task.toString());
                     System.out.println("     Now you have " + taskCount + " tasks in the list.");
@@ -39,7 +39,7 @@ public class Faith {
                     String[] deadlineParts = parts[1].split("/by", 2);
                     Task task = new Deadline(deadlineParts[0].trim(), deadlineParts[1].trim());
                     taskList[taskCount++] = task;
-                    System.out.println("     Got it. I've added this task: ");
+                    System.out.println("     Got it. I've added this task:");
                     System.out.print("       ");
                     System.out.println(task.toString());
                     System.out.println("     Now you have " + taskCount + " tasks in the list.");
@@ -49,7 +49,7 @@ public class Faith {
                     String[] timeParts = eventParts[1].split("/to", 2);
                     Task task = new Event(eventParts[0].trim(), timeParts[0].trim(), timeParts[1].trim());
                     taskList[taskCount++] = task;
-                    System.out.println("     Got it. I've added this task: ");
+                    System.out.println("     Got it. I've added this task:");
                     System.out.print("       ");
                     System.out.println(task.toString());
                     System.out.println("     Now you have " + taskCount + " tasks in the list.");
@@ -71,7 +71,7 @@ public class Faith {
                 System.out.println("    ____________________________________________________________");
             }
         }
-        System.out.println("    Bye. Hope to see you again soon!");
+        System.out.println("     Bye. Hope to see you again soon!");
         System.out.println("    ____________________________________________________________");
     }
 }
