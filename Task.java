@@ -1,7 +1,7 @@
 public class Task {
 
     public String description;
-    private boolean isDone;
+    protected boolean isDone;
 
     public Task(String description) {
         this.description = description;
@@ -13,6 +13,15 @@ public class Task {
     public void unmarkDone() {
         this.isDone = false;
     }
+
+    public int isDoneInt() {
+        return this.isDone ? 1 : 0;
+    }
+
+    public String saveToFileFormat() {
+        return "";
+    }
+
     @Override
     public String toString() {
         return (this.isDone ? "[X] " : "[ ] ") + this.description;

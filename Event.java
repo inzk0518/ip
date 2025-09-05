@@ -8,6 +8,12 @@ public class Event extends Task {
         this.fromTime = fromTime;
         this.toTime = toTime;
     }
+
+    @Override
+    public String saveToFileFormat() {
+        return "T | " + this.isDoneInt() + " | " + description + " | " + fromTime + "-" + toTime;
+    }
+
     @Override
     public String toString() {
         return "[E]" + super.toString() + " (from: " + fromTime + " to: " + toTime + ")";
