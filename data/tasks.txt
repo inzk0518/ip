@@ -1,0 +1,6 @@
+T | 1 | read book
+T | 0 | return book
+T | 0 | shit
+T | 0 | read book
+D | 0 | return book | 21/5/2025 1600
+D | 0 | return book | 20/5/2025
