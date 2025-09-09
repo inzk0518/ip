@@ -4,12 +4,26 @@ import java.util.Scanner;
 
 public class Faith {
     private static final String FILE_PATH = "./data/tasks.txt";
-    public static void main(String[] args) {
+    private Storage storage;
+    private TaskList tasks;
+    private Ui ui;
+
+    public Faith(String filePath) {
+        this.ui = new Ui();
+        this.storage = new Storage(filePath);
+        try {
+            tasks = new TaskList(storage.load());
+        } catch (FaithException e) {
+            ui.showLoadingError();
+            tasks = new TaskList();
+        }
+    }
+
+    public void run() {
         System.out.println("    ____________________________________________________________\n" +
                 "     Hello! I'm Faith\n" + "     What can I do for you?\n" +
                 "    ____________________________________________________________");
         Scanner scanner = new Scanner(System.in);
-        ArrayList<Task> taskList = loadTasks();
 
         while (true) {
             String line = scanner.nextLine().trim();
@@ -19,8 +33,8 @@ public class Faith {
             }
             if (line.equals("list")) {
                 System.out.println("     Here are the tasks in your list:");
-                for (int i = 0; i < taskList.size(); i++) {
-                    System.out.println("     " + (i + 1) + "." + taskList.get(i));
+                for (int i = 0; i < tasks.size(); i++) {
+                    System.out.println("     " + (i + 1) + "." + tasks.get(i));
                 }
                 System.out.println("    ____________________________________________________________");
             } else {
@@ -32,12 +46,12 @@ public class Faith {
                             throw new IllegalArgumentException("     OOPS!!! The description of a todo cannot be empty.");
                         }
                         Task task = new Todo(parts[1]);
-                        taskList.add(task);
-                        saveTasks(taskList);
+                        tasks.add(task);
+                        save();
                         System.out.println("     Got it. I've added this task:");
                         System.out.print("       ");
                         System.out.println(task.toString());
-                        System.out.println("     Now you have " + taskList.size() + " tasks in the list.");
+                        System.out.println("     Now you have " + tasks.size() + " tasks in the list.");
                     } else if (parts[0].equals("deadline")) {
                         //Deadline
                         if (parts.length < 2) {
@@ -50,12 +64,12 @@ public class Faith {
                                     "Please do it like this : deadline <description> /by <date>");
                         }
                         Task task = new Deadline(deadlineParts[0].trim(), deadlineParts[1].trim());
-                        taskList.add(task);
-                        saveTasks(taskList);
+                        tasks.add(task);
+                        save();
                         System.out.println("     Got it. I've added this task:");
                         System.out.print("       ");
                         System.out.println(task.toString());
-                        System.out.println("     Now you have " + taskList.size() + " tasks in the list.");
+                        System.out.println("     Now you have " + tasks.size() + " tasks in the list.");
                     } else if (parts[0].equals("event")) {
                         //Event
                         if (parts.length < 2) {
@@ -72,12 +86,12 @@ public class Faith {
                                     "Please do it like this : event <description> /from <time> to: <time>");
                         }
                         Task task = new Event(eventParts[0].trim(), timeParts[0].trim(), timeParts[1].trim());
-                        taskList.add(task);
-                        saveTasks(taskList);
+                        tasks.add(task);
+                        save();
                         System.out.println("     Got it. I've added this task:");
                         System.out.print("       ");
                         System.out.println(task.toString());
-                        System.out.println("     Now you have " + taskList.size() + " tasks in the list.");
+                        System.out.println("     Now you have " + tasks.size() + " tasks in the list.");
                     } else if (parts[0].equals("delete")) {
                         if (parts.length < 2) {
                             throw new IllegalArgumentException("     OOPS!!! Please specify the task number to delete.");
@@ -88,23 +102,23 @@ public class Faith {
                         } catch (NumberFormatException e) {
                             throw new IllegalArgumentException("     OOPS!!! Task number must be a valid integer.");
                         }
-                        if  (deleteIndex < 0 || deleteIndex >= taskList.size()) {
+                        if (deleteIndex < 0 || deleteIndex >= tasks.size()) {
                             throw new IllegalArgumentException("     OOPS!!! Invalid task number.");
                         }
                         System.out.println("     Noted. I've removed this task:");
-                        System.out.println("       " + taskList.remove(deleteIndex).toString());
-                        System.out.println("     Now you have " + taskList.size() + " tasks in the list.");
-                        saveTasks(taskList);
+                        System.out.println("       " + tasks.remove(deleteIndex).toString());
+                        System.out.println("     Now you have " + tasks.size() + " tasks in the list.");
+                        save();
                     } else if (parts[0].equals("mark")) {
-                        Task targetTask = taskList.get(Integer.parseInt(parts[1]) - 1);
+                        Task targetTask = tasks.get(Integer.parseInt(parts[1]) - 1);
                         targetTask.markDone();
-                        saveTasks(taskList);
+                        save();
                         System.out.println("     Nice! I've marked this task as done:");
                         System.out.println("       " + targetTask);
                     } else if (parts[0].equals("unmark")) {
-                        Task targetTask = taskList.get(Integer.parseInt(parts[1]) - 1);
+                        Task targetTask = tasks.get(Integer.parseInt(parts[1]) - 1);
                         targetTask.unmarkDone();
-                        saveTasks(taskList);
+                        save();
                         System.out.println("     OK, I've marked this task as not done yet:");
                         System.out.println("       " + targetTask);
                     } else {
@@ -119,69 +133,17 @@ public class Faith {
         System.out.println("     Bye. Hope to see you again soon!");
         System.out.println("    ____________________________________________________________");
     }
-    private static ArrayList<Task> loadTasks() {
-        ArrayList<Task> taskList = new ArrayList<>();
-        File file = new File(FILE_PATH);
 
-        if (!file.exists()) {
-            return taskList;
-        }
-
-        try (BufferedReader br = new BufferedReader(new FileReader(file))){
-            String line;
-            while ((line = br.readLine()) != null) {
-                String[] parts = line.split("\\|");
-                if (parts.length < 3) {
-                    continue;
-                }
-                String taskType = parts[0].trim();
-                String description = parts[2].trim();
-                if (taskType.equals("T")) {
-                    Task task = new Todo(description);
-                    taskList.add(task);
-                    if (parts[1].trim().equals("1")) {
-                        task.markDone();
-                    }
-                }
-                if (taskType.equals("D")) {
-                    if (parts.length < 4) {
-                        continue;
-                    }
-                    Task task = new Deadline(description, parts[3].trim());
-                    taskList.add(task);
-                    if (parts[1].trim().equals("1")) {
-                        task.markDone();
-                    }
-                }
-                if (taskType.equals("E")) {
-                    if (parts.length < 4) {
-                        continue;
-                    }
-                    String[] timeParts = parts[3].trim().split("-");
-                    if (timeParts.length != 2) {
-                        continue;
-                    }
-                    Task task = new Event(description, timeParts[0].trim(), timeParts[1].trim());
-                    taskList.add(task);
-                    if (parts[1].trim().equals("1")) {
-                        task.markDone();
-                    }
-                }
-
-            }
-        } catch (IOException e) {
-            System.out.println("     OOPS!!! There was an error loading tasks.");
-        }
-        return taskList;
+    public static void main (String[] args) {
+        Faith bot = new Faith("./data/tasks.txt");
+        bot.run();
     }
-    public static void saveTasks(ArrayList <Task> taskList) {
-        try (BufferedWriter bw = new BufferedWriter(new FileWriter(FILE_PATH))) {
-            for (Task task : taskList) {
-                bw.write(task.saveToFileFormat());
-                bw.newLine();
-            }
-        } catch (IOException e) {
-            System.out.println(" OOPS!!! There was an error saving tasks.");
+
+    private void save() {
+        try {
+            storage.save(tasks);
+        } catch (FaithException e) {
+            ui.showError("     OOPS!!! There is an error saving tasks.");
         }
     }
 }
