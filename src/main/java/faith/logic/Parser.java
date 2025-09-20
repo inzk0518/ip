@@ -27,29 +27,29 @@ public class Parser {
         }
         if (s.startsWith("todo ")) {
             String desc = s.substring(5).trim();
-            if (desc.isEmpty()) throw new FaithException("The description of a todo cannot be empty.");
+            if (desc.isEmpty()) throw new FaithException("     The description of a todo cannot be empty.");
             return new AddTodoCommand(desc);
         }
         if (s.startsWith("deadline ")) {
             int i = s.indexOf(" /by ");
-            if (i < 0) throw new FaithException("Use: deadline <description> /by <date or date time>");
+            if (i < 0) throw new FaithException("     Use: deadline <description> /by <date or date time>");
             String desc = s.substring(9, i).trim();
             String by = s.substring(i + 5).trim();
-            if (desc.isEmpty() || by.isEmpty()) throw new FaithException("Deadline needs both description and /by.");
+            if (desc.isEmpty() || by.isEmpty()) throw new FaithException("     Deadline needs both description and /by.");
             return new AddDeadlineCommand(desc, by);
         }
         if (s.startsWith("event ")) {
             int i = s.indexOf(" /from ");
             int j = s.indexOf(" /to ");
-            if (i < 0) throw new FaithException("Use: event <description> /from <date or date time> /to <date or date time>");
+            if (i < 0) throw new FaithException("     Use: event <description> /from <date or date time> /to <date or date time>");
             String desc = s.substring(6, i).trim();
             String from = s.substring(i + 7).trim();
             String to = s.substring(j + 5).trim();
-            if (desc.isEmpty() || from.isEmpty() || to.isEmpty()) throw new FaithException("Deadline needs description, /from and /to.");
+            if (desc.isEmpty() || from.isEmpty() || to.isEmpty()) throw new FaithException("     Deadline needs description, /from and /to.");
             return new AddEventCommand(desc, from, to);
         }
 
-        throw new FaithException("Sorry, I don't understand.");
+        throw new FaithException("     Sorry, I don't understand.");
     }
 
     private static int parseIndex1Based(String token) throws FaithException {
@@ -58,7 +58,7 @@ public class Parser {
             if (oneBased <= 0) throw new NumberFormatException();
             return oneBased;
         } catch (NumberFormatException e) {
-            throw new FaithException("Index must be a positive integer.");
+            throw new FaithException("     Index must be a positive integer.");
         }
     }
 }
