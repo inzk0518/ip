@@ -4,8 +4,14 @@ import faith.io.Ui;
 import faith.io.Storage;
 import faith.model.TaskList;
 
+/**
+ * Print the task list in their natural order
+ */
 public class ListCommand extends Command {
-    public ListCommand() {}
+
+    /**
+     * Executes: prints either an empty message or a numbered list of tasks.
+     */
     @Override
     public void execute(TaskList tasks, Ui ui, Storage storage) {
         ui.show("     Here are the tasks in your list:");
