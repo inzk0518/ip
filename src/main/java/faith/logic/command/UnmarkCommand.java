@@ -13,7 +13,7 @@ public class UnmarkCommand extends Command {
     }
     @Override
     public void execute(TaskList tasks, Ui ui, Storage storage) throws FaithException{
-        Task targetTask = tasks.get(idx);
+        Task targetTask = tasks.get(idx - 1);
         targetTask.unmarkDone();
         ui.show("     OK, I've marked this task as not done yet:");
         ui.show("       " + targetTask);

@@ -14,7 +14,7 @@ public class MarkCommand extends Command {
     }
     @Override
     public void execute(TaskList tasks, Ui ui, Storage storage) throws FaithException {
-        Task targetTask = tasks.get(idx);
+        Task targetTask = tasks.get(idx - 1);
         targetTask.markDone();
         ui.show("     Nice! I've marked this task as done:");
         ui.show("       " + targetTask);
