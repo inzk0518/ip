@@ -4,12 +4,12 @@ import faith.exception.FaithException;
 import faith.io.Storage;
 import faith.io.Ui;
 import faith.model.TaskList;
-import faith.model.task.Task;
 
 /**
  * Deletes a task from the list by index.
  */
 public class DeleteCommand extends Command {
+
     private final int idx;
 
     /**

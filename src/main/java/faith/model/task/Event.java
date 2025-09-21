@@ -6,7 +6,6 @@ import java.time.format.DateTimeParseException;
 
 
 public class Event extends Task {
-
     protected String fromTime;
     protected String toTime;
 

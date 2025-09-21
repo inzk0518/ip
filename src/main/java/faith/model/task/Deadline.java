@@ -36,16 +36,24 @@ public class Deadline extends Task {
         }
 
         if (byDateTime == null) {
-            try { byDateTime = LocalDate.parse(by, DMY).atStartOfDay(); } catch (DateTimeParseException ignore) {}
+            try {
+                byDateTime = LocalDate.parse(by, DMY).atStartOfDay();
+            } catch (DateTimeParseException ignore) {}
         }
         if (byDateTime == null) {
-            try { byDateTime = LocalDate.parse(by, DMY_).atStartOfDay(); } catch (DateTimeParseException ignore) {}
+            try {
+                byDateTime = LocalDate.parse(by, DMY_).atStartOfDay();
+            } catch (DateTimeParseException ignore) {}
         }
         if (byDateTime == null) {
-            try { byDateTime = LocalDate.parse(by, YMD).atStartOfDay(); } catch (DateTimeParseException ignore) {}
+            try {
+                byDateTime = LocalDate.parse(by, YMD).atStartOfDay();
+            } catch (DateTimeParseException ignore) {}
         }
         if (byDateTime == null) {
-            try { byDateTime = LocalDate.parse(by, ISO_DATE).atStartOfDay(); } catch (DateTimeParseException ignore) {}
+            try {
+                byDateTime = LocalDate.parse(by, ISO_DATE).atStartOfDay();
+            } catch (DateTimeParseException ignore) {}
         }
     }
 
@@ -57,7 +65,10 @@ public class Deadline extends Task {
     @Override
     public String toString() {
         return "[D]" + super.toString()
-                + " (by: " + (byDateTime == null ? this.by : (byDateTime.toLocalDate().format(DateTimeFormatter.ofPattern("MMM d uuuu"))
-                 + (hasTime ? ", " + byDateTime.toLocalTime().format(DateTimeFormatter.ofPattern("h:mma")) : ""))) + ")";
+                + " (by: " + (byDateTime == null
+                ? this.by
+                : (byDateTime.toLocalDate().format(DateTimeFormatter.ofPattern("MMM d uuuu"))
+                + (hasTime ? ", " + byDateTime.toLocalTime().format(DateTimeFormatter.ofPattern("h:mma")) : "")))
+                + ")";
     }
 }
