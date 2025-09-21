@@ -48,7 +48,13 @@ public class Parser {
             if (desc.isEmpty() || from.isEmpty() || to.isEmpty()) throw new FaithException("     Deadline needs description, /from and /to.");
             return new AddEventCommand(desc, from, to);
         }
-
+        if (s.startsWith("find ")) {
+            String keyword = s.substring(5).trim();
+            if (keyword.isEmpty()) {
+                throw new FaithException("     Find keywords cannot be empty.");
+            }
+            return new FindCommand(keyword);
+        }
         throw new FaithException("     Sorry, I don't understand.");
     }
 
