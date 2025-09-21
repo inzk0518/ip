@@ -12,7 +12,6 @@ import faith.model.TaskList;
  * Wires together UI, storage, task list, and the command loop.
  */
 public class Faith {
-    private static final String FILE_PATH = "./data/tasks.txt";
     private Storage storage;
     private TaskList tasks;
     private Ui ui;
@@ -20,7 +19,7 @@ public class Faith {
     /**
      * Creates a new Faith instance and attempts to load tasks from the given file path.
      *
-     * @param filePath path to the persistent tasks file (e.g., "data/tasks.txt").
+     * @param filePath path to the storage tasks file (e.g., "data/tasks.txt").
      */
     public Faith(String filePath) {
         this.ui = new Ui();

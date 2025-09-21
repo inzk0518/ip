@@ -8,10 +8,18 @@ public class TaskList {
 
     private final ArrayList<Task> taskList;
 
+    /**
+     * Returns a new empty task list
+     */
     public TaskList() {
         this.taskList = new ArrayList<>();
     }
 
+    /**
+     * Constructs a task list from given list
+     *
+     * @param initial returns a task list constructed with given list
+     */
     public TaskList(List<Task> initial) {
         this.taskList = new ArrayList<>(initial);
     }

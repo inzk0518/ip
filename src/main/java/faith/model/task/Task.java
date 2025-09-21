@@ -1,7 +1,6 @@
 package faith.model.task;
 
 public class Task {
-
     public String description;
     protected boolean isDone;
 

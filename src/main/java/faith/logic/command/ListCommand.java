@@ -1,7 +1,7 @@
 package faith.logic.command;
 
-import faith.io.Ui;
 import faith.io.Storage;
+import faith.io.Ui;
 import faith.model.TaskList;
 
 /**

@@ -2,10 +2,6 @@ package faith.logic;
 
 import faith.exception.FaithException;
 import faith.logic.command.*;
-import faith.model.TaskList;
-import faith.model.task.Deadline;
-import faith.model.task.Task;
-import faith.model.task.Todo;
 
 /**
  * Parses user input strings into executable {@link Command} objects.
@@ -15,16 +11,16 @@ public class Parser {
 
     /**
      * Parses the original user command into a specific {@link Command} instance.
-     *
+     * <p>
      * Supported commands include: list, bye, todo, deadline, event, mark, unmark, delete.
      *
      * @param input the command line input from user.
      * @return a {@link Command} instance.
      * @throws FaithException if the command is unknown or arguments are invalid.
      */
-    public static Command parse (String input) throws FaithException {
+    public static Command parse(String input) throws FaithException {
         String s = input.trim();
-        if (s.equals("bye"))  return new ExitCommand();
+        if (s.equals("bye")) return new ExitCommand();
         if (s.equals("list")) return new ListCommand();
 
         if (s.startsWith("mark ")) {
@@ -58,17 +54,20 @@ public class Parser {
             if (i < 0) throw new FaithException("     Use: deadline <description> /by <date or date time>");
             String desc = s.substring(9, i).trim();
             String by = s.substring(i + 5).trim();
-            if (desc.isEmpty() || by.isEmpty()) throw new FaithException("     Deadline needs both description and /by.");
+            if (desc.isEmpty() || by.isEmpty())
+                throw new FaithException("     Deadline needs both description and /by.");
             return new AddDeadlineCommand(desc, by);
         }
         if (s.startsWith("event ")) {
             int i = s.indexOf(" /from ");
             int j = s.indexOf(" /to ");
-            if (i < 0) throw new FaithException("     Use: event <description> /from <date or date time> /to <date or date time>");
+            if (i < 0)
+                throw new FaithException("     Use: event <description> /from <date or date time> /to <date or date time>");
             String desc = s.substring(6, i).trim();
             String from = s.substring(i + 7).trim();
             String to = s.substring(j + 5).trim();
-            if (desc.isEmpty() || from.isEmpty() || to.isEmpty()) throw new FaithException("     Deadline needs description, /from and /to.");
+            if (desc.isEmpty() || from.isEmpty() || to.isEmpty())
+                throw new FaithException("     Deadline needs description, /from and /to.");
             return new AddEventCommand(desc, from, to);
         }
 

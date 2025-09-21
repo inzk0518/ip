@@ -36,7 +36,6 @@ public class Storage {
      * @throws FaithException if the file cannot be read or parsed.
      */
     public List<Task> load() throws FaithException {
-
         TaskList taskList = new TaskList();
         File file = new File(filePath);
 

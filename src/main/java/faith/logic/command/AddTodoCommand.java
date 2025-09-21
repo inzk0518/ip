@@ -10,6 +10,7 @@ import faith.model.task.Todo;
  * Adds a new {@code Todo} task to the list.
  */
 public class AddTodoCommand extends Command {
+
     private String desc;
     /**
      * Creates a command to add a Todo task with the given description.
