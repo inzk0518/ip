@@ -7,7 +7,7 @@ import faith.model.TaskList;
 import faith.model.task.Task;
 
 /**
- * Mark a task as done by its displaying index
+ * Mark a task as done by its displaying index.
  */
 public class MarkCommand extends Command {
 

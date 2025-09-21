@@ -11,14 +11,14 @@ public class ExitCommand extends Command {
 
     /**
      *
-     * @return always true because this is an exit command
+     * @return always true because this is an exit command.
      */
     public boolean isExit() {
         return true;
     }
 
     /**
-     * Executes: prints the goodbye message
+     * Executes: prints the goodbye message.
      */
     @Override
     public void execute(TaskList tasks, Ui ui, Storage storage) {

@@ -1,7 +1,7 @@
 package faith.exception;
 
 /**
- * checked exception for recoverable errors
+ * checked exception for recoverable errors.
  * (e.g., unscripted commands, I/O failures).
  */
 public class FaithException extends Exception {

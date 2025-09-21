@@ -16,8 +16,8 @@ public class AddDeadlineCommand extends Command {
 
     /**
      * Creates a command to add a Deadline task with the given description.
-     * @param desc non-empty task description
-     * @param by deadline datetime of task (e.g., 20/9/2025 1600)
+     * @param desc non-empty task description.
+     * @param by deadline datetime of task (e.g., 20/9/2025 1600).
      */
     public AddDeadlineCommand(String desc, String by) {
         this.desc = desc;
