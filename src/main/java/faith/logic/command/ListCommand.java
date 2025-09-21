@@ -5,7 +5,7 @@ import faith.io.Ui;
 import faith.model.TaskList;
 
 /**
- * Print the task list in their natural order
+ * Print the task list in their natural order.
  */
 public class ListCommand extends Command {
 
