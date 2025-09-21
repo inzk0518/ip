@@ -7,22 +7,45 @@ import faith.model.task.Deadline;
 import faith.model.task.Task;
 import faith.model.task.Todo;
 
+/**
+ * Parses user input strings into executable {@link Command} objects.
+ * Responsible only for syntactic interpretation; execution happens in commands.
+ */
 public class Parser {
+
+    /**
+     * Parses the original user command into a specific {@link Command} instance.
+     *
+     * Supported commands include: list, bye, todo, deadline, event, mark, unmark, delete.
+     *
+     * @param input the command line input from user.
+     * @return a {@link Command} instance.
+     * @throws FaithException if the command is unknown or arguments are invalid.
+     */
     public static Command parse (String input) throws FaithException {
         String s = input.trim();
         if (s.equals("bye"))  return new ExitCommand();
         if (s.equals("list")) return new ListCommand();
 
         if (s.startsWith("mark ")) {
-            int idx = parseIndex1Based(s.substring(5).trim());
+            int idx = Integer.parseInt(s.substring(5).trim());
+            if (idx <= 0) {
+                throw new FaithException("Index must be a positive integer.");
+            }
             return new MarkCommand(idx);
         }
         if (s.startsWith("unmark ")) {
-            int idx = parseIndex1Based(s.substring(7).trim());
+            int idx = Integer.parseInt(s.substring(7).trim());
+            if (idx <= 0) {
+                throw new FaithException("Index must be a positive integer.");
+            }
             return new UnmarkCommand(idx);
         }
         if (s.startsWith("delete ")) {
-            int idx = parseIndex1Based(s.substring(7).trim());
+            int idx = Integer.parseInt(s.substring(7).trim());
+            if (idx <= 0) {
+                throw new FaithException("Index must be a positive integer.");
+            }
             return new DeleteCommand(idx);
         }
         if (s.startsWith("todo ")) {
@@ -50,15 +73,5 @@ public class Parser {
         }
 
         throw new FaithException("     Sorry, I don't understand.");
-    }
-
-    private static int parseIndex1Based(String token) throws FaithException {
-        try {
-            int oneBased = Integer.parseInt(token);
-            if (oneBased <= 0) throw new NumberFormatException();
-            return oneBased;
-        } catch (NumberFormatException e) {
-            throw new FaithException("     Index must be a positive integer.");
-        }
     }
 }

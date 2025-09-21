@@ -12,15 +12,29 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Store tasks to disk and loads them back on startup.
+ * Storage format is string text, one task per line.
+ */
 public class Storage {
 
     private final String filePath;
 
-
+    /**
+     * Creates a storage with the given file path.
+     *
+     * @param filePath path to the tasks file.
+     */
     public Storage(String filePath) {
         this.filePath = filePath;
     }
 
+    /**
+     * Loads tasks from disk. Creates the file if missing.
+     *
+     * @return a list of tasks loaded from storage.
+     * @throws FaithException if the file cannot be read or parsed.
+     */
     public List<Task> load() throws FaithException {
 
         TaskList taskList = new TaskList();
@@ -78,6 +92,12 @@ public class Storage {
         return taskList.asList();
     }
 
+    /**
+     * Saves the task list to disk, overwriting the file.
+     *
+     * @param tasks the task list to store.
+     * @throws FaithException if writing fails.
+     */
     public void save(TaskList tasks) throws FaithException {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(filePath))) {
             for (Task t : tasks.asList()) {

@@ -7,13 +7,21 @@ import faith.logic.Parser;
 import faith.logic.command.Command;
 import faith.model.TaskList;
 
-
+/**
+ * Entry point of the Faith application.
+ * Wires together UI, storage, task list, and the command loop.
+ */
 public class Faith {
     private static final String FILE_PATH = "./data/tasks.txt";
     private Storage storage;
     private TaskList tasks;
     private Ui ui;
 
+    /**
+     * Creates a new Faith instance and attempts to load tasks from the given file path.
+     *
+     * @param filePath path to the persistent tasks file (e.g., "data/tasks.txt").
+     */
     public Faith(String filePath) {
         this.ui = new Ui();
         this.storage = new Storage(filePath);
@@ -25,6 +33,10 @@ public class Faith {
         }
     }
 
+    /**
+     * Runs the main event loop:
+     * reads commands, executes them, handles errors, and decides when to exit.
+     */
     public void run() {
         ui.showWelcome();
         boolean isExit = false;
@@ -43,16 +55,14 @@ public class Faith {
         }
     }
 
+    /**
+     * Launches the application.
+     *
+     * @param args command line arguments (unused).
+     */
     public static void main (String[] args) {
         new Faith("data/tasks.txt").run();
     }
 
-    private void save() {
-        try {
-            storage.save(tasks);
-        } catch (FaithException e) {
-            ui.showError("     OOPS!!! There is an error saving tasks.");
-        }
-    }
 }
 
