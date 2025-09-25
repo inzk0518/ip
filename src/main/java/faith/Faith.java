@@ -1,6 +1,7 @@
 package faith;
 
 import faith.exception.*;
+import faith.io.BufferedUi;
 import faith.io.Storage;
 import faith.io.Ui;
 import faith.logic.Parser;
@@ -29,6 +30,34 @@ public class Faith {
         } catch (FaithException e) {
             ui.showLoadingError();
             tasks = new TaskList();
+        }
+    }
+
+    public String getResponse(String input) {
+        /*try {
+            Command c = Parser.parse(input);
+            c.execute(tasks, ui, storage);
+            if (c.isExit()) {
+                return "Bye. Hope to see you again soon!";
+            }
+            return "OK.";
+        } catch (FaithException e) {
+            return e.getMessage();
+        } catch (Exception e) {
+            return "Unexpected error: " + e.getMessage();
+        }*/
+        BufferedUi bui = new BufferedUi();
+        try {
+            Command c = Parser.parse(input);
+            c.execute(tasks, bui, storage);     // <— run with buffered UI, not the console Ui
+            String reply = bui.drain();
+            if (reply.isEmpty()) reply = "OK.";
+            return reply;
+        } catch (FaithException e) {
+            bui.showError(e.getMessage());
+            return bui.drain();
+        } catch (Exception e) {
+            return "Unexpected error: " + e.getMessage();
         }
     }
 
