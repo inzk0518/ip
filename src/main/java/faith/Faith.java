@@ -34,22 +34,11 @@ public class Faith {
     }
 
     public String getResponse(String input) {
-        /*try {
-            Command c = Parser.parse(input);
-            c.execute(tasks, ui, storage);
-            if (c.isExit()) {
-                return "Bye. Hope to see you again soon!";
-            }
-            return "OK.";
-        } catch (FaithException e) {
-            return e.getMessage();
-        } catch (Exception e) {
-            return "Unexpected error: " + e.getMessage();
-        }*/
         BufferedUi bui = new BufferedUi();
+
         try {
             Command c = Parser.parse(input);
-            c.execute(tasks, bui, storage);     // <— run with buffered UI, not the console Ui
+            c.execute(tasks, bui, storage);
             String reply = bui.drain();
             if (reply.isEmpty()) reply = "OK.";
             return reply;
