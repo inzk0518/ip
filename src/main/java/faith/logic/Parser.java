@@ -19,12 +19,14 @@ public class Parser {
      * @throws FaithException if the command is unknown or arguments are invalid.
      */
     public static Command parse(String input) throws FaithException {
+        assert input != null : "parse input must not be null";
         String s = input.trim();
         if (s.equals("bye")) return new ExitCommand();
         if (s.equals("list")) return new ListCommand();
 
         if (s.startsWith("mark ")) {
             int idx = Integer.parseInt(s.substring(5).trim());
+            assert idx > 0 : "mark: index must be > 0";
             if (idx <= 0) {
                 throw new FaithException("Index must be a positive integer.");
             }
@@ -32,6 +34,7 @@ public class Parser {
         }
         if (s.startsWith("unmark ")) {
             int idx = Integer.parseInt(s.substring(7).trim());
+            assert idx > 0 : "unmark: index must be > 0";
             if (idx <= 0) {
                 throw new FaithException("Index must be a positive integer.");
             }
@@ -39,6 +42,7 @@ public class Parser {
         }
         if (s.startsWith("delete ")) {
             int idx = Integer.parseInt(s.substring(7).trim());
+            assert idx > 0 : "delete: index must be > 0";
             if (idx <= 0) {
                 throw new FaithException("Index must be a positive integer.");
             }
