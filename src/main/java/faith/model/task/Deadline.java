@@ -57,6 +57,44 @@ public class Deadline extends Task {
         }
     }
 
+    public void setBy(String newBy) {
+        this.by = newBy.trim();
+        this.hasTime = false;
+        this.byDateTime = null;
+        try {
+            byDateTime = LocalDateTime.parse(by, DMYHHMM);
+            hasTime = true;
+        } catch (DateTimeParseException e) {}
+
+        if (byDateTime == null) {
+            try {
+                byDateTime = LocalDateTime.parse(by, DMYHHMM_);
+                hasTime = true;
+            } catch (DateTimeParseException e) {}
+        }
+
+        if (byDateTime == null) {
+            try {
+                byDateTime = LocalDate.parse(by, DMY).atStartOfDay();
+            } catch (DateTimeParseException ignore) {}
+        }
+        if (byDateTime == null) {
+            try {
+                byDateTime = LocalDate.parse(by, DMY_).atStartOfDay();
+            } catch (DateTimeParseException ignore) {}
+        }
+        if (byDateTime == null) {
+            try {
+                byDateTime = LocalDate.parse(by, YMD).atStartOfDay();
+            } catch (DateTimeParseException ignore) {}
+        }
+        if (byDateTime == null) {
+            try {
+                byDateTime = LocalDate.parse(by, ISO_DATE).atStartOfDay();
+            } catch (DateTimeParseException ignore) {}
+        }
+    }
+
     @Override
     public String saveToFileFormat() {
         return "D | " + this.isDoneInt() + " | " + description + " | " + by;
