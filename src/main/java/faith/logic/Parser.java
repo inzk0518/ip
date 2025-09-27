@@ -81,6 +81,7 @@ public class Parser {
             }
             return new FindCommand(keyword);
         }
+        //Ask chatgpt on idea of writing simple code for this
         if (s.startsWith("edit ")) {
             // Format (one field only):
             // edit <index> /desc <text>
