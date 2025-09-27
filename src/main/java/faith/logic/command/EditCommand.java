@@ -37,21 +37,21 @@ public class EditCommand extends Command {
             if (t instanceof Deadline) {
                 ((Deadline) t).setBy(value);
             } else {
-                throw new FaithException("Field 'by/' applies only to deadlines.");
+                throw new FaithException("Field '/by' applies only to deadlines.");
             }
             break;
         case FROM:
             if (t instanceof Event) {
                 ((Event) t).setFrom(value);
             } else {
-                throw new FaithException("Field 'from/' applies only to events.");
+                throw new FaithException("Field '/from' applies only to events.");
             }
             break;
         case TO:
             if (t instanceof Event) {
                 ((Event) t).setTo(value);
             } else {
-                throw new FaithException("Field 'to/' applies only to events.");
+                throw new FaithException("Field '/to' applies only to events.");
             }
             break;
         default:
