@@ -13,9 +13,14 @@ public class Task {
         return this.description;
     }
 
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     public void markDone() {
         this.isDone = true;
     }
+
     public void unmarkDone() {
         this.isDone = false;
     }

@@ -15,6 +15,14 @@ public class Event extends Task {
         this.toTime = toTime;
     }
 
+    public void setFrom(String newFrom) {
+        this.fromTime = newFrom;
+    }
+
+    public void setTo(String newTo) {
+        this.toTime = newTo;
+    }
+
     @Override
     public String saveToFileFormat() {
         return "T | " + this.isDoneInt() + " | " + description + " | " + fromTime + "-" + toTime;

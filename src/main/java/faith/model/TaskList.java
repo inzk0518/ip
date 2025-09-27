@@ -35,6 +35,7 @@ public class TaskList {
 
     /**
      * Returns the task at the specified position in this list.
+     *
      * @param index index of the task to return.
      * @return the task at the specified position in this list.
      */
@@ -44,10 +45,23 @@ public class TaskList {
 
     /**
      * Appends the specified task to the end of this list.
+     *
      * @param t task to be appended to this list.
      */
     public void add(Task t) {
         taskList.add(t);
+    }
+
+    /**
+     * Inserts the specified task at the specified position in this list.
+     * Shifts the task currently at that position (if any)
+     * and any subsequent tasks to the right (adds one to their indices).
+     *
+     * @param index index at which the specified element is to be inserted
+     * @param t task to be inserted
+     */
+    public void add(int index, Task t) {
+        taskList.add(index, t);
     }
 
     /**

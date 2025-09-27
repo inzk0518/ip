@@ -81,6 +81,55 @@ public class Parser {
             }
             return new FindCommand(keyword);
         }
+        if (s.startsWith("edit ")) {
+            // Format (one field only):
+            // edit <index> /desc <text>
+            // edit <index> /by <dateOrDateTime>
+            // edit <index> /from <dateOrDateTime>
+            // edit <index> /to <dateOrDateTime>
+            String remainder = s.substring(5).trim();
+            int sp = remainder.indexOf(' ');
+            if (sp < 0) throw new FaithException("Use: edit <index> <field>/ <value>");
+
+            int idx = Integer.parseInt(remainder.substring(0, sp).trim()) - 1;
+            assert idx >= 0 : "edit: index must be > 0";
+            String args = remainder.substring(sp + 1).trim();
+
+            int posDesc = args.indexOf("/desc");
+            int posBy   = args.indexOf("/by");
+            int posFrom = args.indexOf("/from");
+            int posTo = args.indexOf("/to");
+
+            int count = 0;
+            if (posDesc == 0) count++;
+            if (posBy   == 0) count++;
+            if (posFrom == 0) count++;
+            if (posTo == 0) count++;
+
+            if (count != 1) {
+                throw new FaithException("Provide exactly one field: /desc | /by | /from | /to");
+            }
+
+            if (posDesc == 0) {
+                String val = args.substring(5).trim();
+                if (val.isEmpty()) throw new FaithException("/desc cannot be empty.");
+                return new EditCommand(idx, EditCommand.Field.DESC, val);
+            }
+            if (posBy == 0) {
+                String val = args.substring(3).trim();
+                if (val.isEmpty()) throw new FaithException("/by cannot be empty.");
+                return new EditCommand(idx, EditCommand.Field.BY, val);
+            }
+            if (posFrom == 0) {
+                String val = args.substring(5).trim();
+                if (val.isEmpty()) throw new FaithException("/from cannot be empty.");
+                return new EditCommand(idx, EditCommand.Field.FROM, val);
+            }
+            // posTo == 0
+            String val = args.substring(3).trim();
+            if (val.isEmpty()) throw new FaithException("/to cannot be empty.");
+            return new EditCommand(idx, EditCommand.Field.TO, val);
+        }
         throw new FaithException("     Sorry, I don't understand.");
     }
 }
