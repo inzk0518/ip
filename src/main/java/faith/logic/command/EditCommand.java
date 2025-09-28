@@ -8,6 +8,9 @@ import faith.model.task.Deadline;
 import faith.model.task.Event;
 import faith.model.task.Task;
 
+/**
+ * Edit existing task
+ */
 public class EditCommand extends Command {
     public enum Field { DESC, BY, FROM, TO }
 
@@ -15,12 +18,25 @@ public class EditCommand extends Command {
     private final Field field;
     private final String value;
 
+    /**
+     * Constructs an edit command.
+     *
+     * @param field which is getting edited
+     */
     public EditCommand(int index, Field field, String value) {
         this.index = index;
         this.field = field;
         this.value = value;
     }
 
+    /**
+     * Edit a task's description, deadline, start or end time
+     *
+     * @param tasks   task list.
+     * @param ui      the UI to show messages to the user.
+     * @param storage the storage used to store task list.
+     * @throws FaithException
+     */
     @Override
     public void execute(TaskList tasks, Ui ui, Storage storage) throws FaithException {
         if (index < 0 || index >= tasks.size()) {

@@ -5,6 +5,9 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
+/**
+ * A task with a due date/time.
+ */
 public class Deadline extends Task {
 
     protected String by;
@@ -20,6 +23,12 @@ public class Deadline extends Task {
     private static final DateTimeFormatter YMD = DateTimeFormatter.ofPattern("uuuu/M/d");
     private static final DateTimeFormatter ISO_DATE = DateTimeFormatter.ISO_LOCAL_DATE;
 
+    /**
+     * Creates a deadline with the given description and raw date/time string.
+     *
+     * @param description description of the task.
+     * @param by due date/time of tge task (e.g., "20/5/2025" or "20/5/2025 1600" or "2025-12-02").
+     */
     public Deadline(String description, String by) {
         super(description);
         this.by = by;
@@ -57,6 +66,11 @@ public class Deadline extends Task {
         }
     }
 
+    /**
+     * Edit the task due time.
+     *
+     * @param newBy the new due time
+     */
     public void setBy(String newBy) {
         this.by = newBy.trim();
         this.hasTime = false;
@@ -95,11 +109,21 @@ public class Deadline extends Task {
         }
     }
 
+    /**
+     * Converts this deadline to the storage line format.
+     *
+     * @return storage record line.
+     */
     @Override
     public String saveToFileFormat() {
         return "D | " + this.isDoneInt() + " | " + description + " | " + by;
     }
 
+    /**
+     * Returns a user-friendly representation including the pretty-printed date/time.
+     *
+     * @return human-readable string for UI.
+     */
     @Override
     public String toString() {
         return "[D]" + super.toString()
