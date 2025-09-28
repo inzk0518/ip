@@ -37,56 +37,66 @@ public class Storage {
      */
     public List<Task> load() throws FaithException {
         TaskList taskList = new TaskList();
-        File file = new File(filePath);
+        Path path = Paths.get(filePath);
 
-        if (!file.exists()) {
-            return taskList.asList();
-        }
+        try {
+            // NEW: ensure parent dir + file exist on first run
+            if (Files.notExists(path)) {
+                Path parent = path.getParent();
+                if (parent != null) {
+                    Files.createDirectories(parent);
+                }
+                Files.createFile(path);
+                return taskList.asList(); // empty list
+            }
 
-        try (BufferedReader br = new BufferedReader(new FileReader(file))){
-            String line;
-            while ((line = br.readLine()) != null) {
-                String[] parts = line.split("\\|");
-                if (parts.length < 3) {
-                    continue;
-                }
-                String taskType = parts[0].trim();
-                String description = parts[2].trim();
-                if (taskType.equals("T")) {
-                    Task task = new Todo(description);
-                    taskList.add(task);
-                    if (parts[1].trim().equals("1")) {
-                        task.markDone();
-                    }
-                }
-                if (taskType.equals("D")) {
-                    if (parts.length < 4) {
+            try (BufferedReader br = Files.newBufferedReader(path)) {
+                String line;
+                while ((line = br.readLine()) != null) {
+                    String[] parts = line.split("\\|"); // storage: "T | 1 | desc | extra"
+                    if (parts.length < 3) {
                         continue;
                     }
-                    Task task = new Deadline(description, parts[3].trim());
-                    taskList.add(task);
-                    if (parts[1].trim().equals("1")) {
-                        task.markDone();
-                    }
-                }
-                if (taskType.equals("E")) {
-                    if (parts.length < 4) {
-                        continue;
-                    }
-                    String[] timeParts = parts[3].trim().split("-");
-                    if (timeParts.length != 2) {
-                        continue;
-                    }
-                    Task task = new Event(description, timeParts[0].trim(), timeParts[1].trim());
-                    taskList.add(task);
-                    if (parts[1].trim().equals("1")) {
-                        task.markDone();
-                    }
-                }
+                    String taskType = parts[0].trim();
+                    String description = parts[2].trim();
 
+                    if (taskType.equals("T")) {
+                        Task task = new Todo(description);
+                        taskList.add(task);
+                        if (parts[1].trim().equals("1")) {
+                            task.markDone();
+                        }
+                    }
+
+                    if (taskType.equals("D")) {
+                        if (parts.length < 4) {
+                            continue;
+                        }
+                        Task task = new Deadline(description, parts[3].trim());
+                        taskList.add(task);
+                        if (parts[1].trim().equals("1")) {
+                            task.markDone();
+                        }
+                    }
+
+                    if (taskType.equals("E")) {
+                        if (parts.length < 4) {
+                            continue;
+                        }
+                        String[] timeParts = parts[3].trim().split("-");
+                        if (timeParts.length != 2) {
+                            continue;
+                        }
+                        Task task = new Event(description, timeParts[0].trim(), timeParts[1].trim());
+                        taskList.add(task);
+                        if (parts[1].trim().equals("1")) {
+                            task.markDone();
+                        }
+                    }
+                }
             }
         } catch (IOException e) {
-            throw new FaithException();
+            throw new FaithException("Failed to load tasks from " + filePath + ": " + e.getMessage());
         }
         return taskList.asList();
     }
