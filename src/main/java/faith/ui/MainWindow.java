@@ -27,6 +27,9 @@ public class MainWindow extends AnchorPane {
     @FXML
     public void initialize() {
         scrollPane.vvalueProperty().bind(dialogContainer.heightProperty());
+
+        dialogContainer.getChildren()
+                .add(DialogBox.getFaithDialog("Hello! I'm Faith\nWhat can I do for you?", faithImage));
     }
 
     public void setFaith(Faith f) {
